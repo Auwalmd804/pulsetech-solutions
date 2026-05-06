@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuwalMD Tech - Admin Dashboard</title>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+    .header { background: #0b93f7; color: white; padding: 15px; text-align: center; }
+    .nav { background: #333; color: white; padding: 10px; }
+    .nav button { margin: 5px; padding: 10px 15px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>AuwalMD Tech - Admin Panel</h1>
+    <p>Online Shop Management</p>
+  </div>
+
+  <div class="nav">
+    <button onclick="showSection('dashboard')">Dashboard</button>
+    <button onclick="showSection('products')">Products</button>
+    <button onclick="showSection('orders')">Orders</button>
+    <button onclick="showSection('users')">Users</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div class="container">
+    <div id="dashboard" class="section"> <h2>Welcome to Dashboard</h2> </div>
+    <div id="products" class="section" style="display:none;"> <h2>Products Management</h2> </div>
+    <div id="orders" class="section" style="display:none;"> <h2>Orders</h2> </div>
+    <div id="users" class="section" style="display:none;"> <h2>Users</h2> </div>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDwnZ2VPQ3khaCao0U6zMDTgiw9ncXzwZ0",
+      authDomain: "auwalmdchat.firebaseapp.com",
+      projectId: "auwalmdchat",
+      storageBucket: "auwalmdchat.firebasestorage.app",
+      messagingSenderId: "555262769124",
+      appId: "1:555262769124:web:ea255afdfac5c77444b9f1"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    function showSection(section) {
+      document.querySelectorAll('.section').forEach(div => div.style.display = 'none');
+      document.getElementById(section).style.display = 'block';
+    }
+
+    function logout() {
+      auth.signOut().then(() => window.location.href = "login.html");
+    }
+
+    // Check if user is logged in
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+  </script>
+</body>
+</html>
