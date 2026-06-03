@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Active Data - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-stone-100 text-stone-800 font-sans min-h-screen flex flex-col md:flex-row">
+
+    <!-- Sidebar Menu (Kalar Ash/Stone) -->
+    <aside class="w-full md:w-64 bg-stone-800 text-stone-200 flex flex-col shadow-lg">
+        <div class="p-5 text-center font-bold text-xl tracking-wider border-b border-stone-700 text-white">
+            ADMIN PANEL
+        </div>
+        <nav class="flex-grow p-4 space-y-2">
+            <button onclick="showSection('overview')" class="w-full text-left px-4 py-2.5 rounded hover:bg-stone-700 font-medium transition cursor-pointer">Overview</button>
+            <button onclick="showSection('api_settings')" class="w-full text-left px-4 py-2.5 rounded hover:bg-stone-700 font-medium transition cursor-pointer">API Integration Manager</button>
+            <button onclick="showSection('pricing_settings')" class="w-full text-left px-4 py-2.5 rounded hover:bg-stone-700 font-medium transition cursor-pointer">Pricing Management</button>
+            <button onclick="showSection('user_management')" class="w-full text-left px-4 py-2.5 rounded hover:bg-stone-700 font-medium transition cursor-pointer">User Management</button>
+            <button id="logoutBtn" class="w-full text-left px-4 py-2.5 rounded hover:bg-red-700 text-red-400 font-medium transition mt-10 cursor-pointer">Fita (Logout)</button>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-6 sm:p-8 overflow-y-auto">
+        
+        <!-- HEADER -->
+        <header class="flex justify-between items-center mb-8 border-b border-stone-200 pb-4">
+            <h1 id="pageTitle" class="text-2xl font-bold text-stone-800">Overview Dashboard</h1>
+            <div class="text-sm font-semibold bg-stone-200 text-stone-700 px-3 py-1 rounded-full">Admin: yau789452@gmail.com</div>
+        </header>
+
+        <!-- SECTION 1: OVERVIEW -->
+        <section id="overview" class="dashboard-section space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <div class="text-sm text-stone-500 font-bold uppercase">Total Users</div>
+                    <div class="text-3xl font-extrabold text-stone-800 mt-2" id="countUsers">Loading...</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <div class="text-sm text-stone-500 font-bold uppercase">Total API Connections</div>
+                    <div class="text-3xl font-extrabold text-stone-800 mt-2">5 Active</div>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                    <div class="text-sm text-stone-500 font-bold uppercase">API Provider Active</div>
+                    <div class="text-xl font-bold text-amber-600 mt-2">Alrahuz Data Engine</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DYNAMIC API INTEGRATION MANAGER -->
+        <section id="api_settings" class="dashboard-section hidden space-y-8">
+            <!-- Part A: VTU/Data API Provider Form -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 border-b pb-2">➕ Dora Sabon API na Data/Airtime (Kowane Kamfani)</h3>
+                <form id="vtuApiForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Sunan Kamfani (Provider Name)</label>
+                        <input type="text" id="vtuProviderName" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="Misali: Alrahuz, VTpass, etc.">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Base URL na API</label>
+                        <input type="url" id="vtuBaseUrl" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="https://api.kamfani.com/v1">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-stone-600 mb-1">API Key / Secret Token</label>
+                        <input type="text" id="vtuApiKey" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="Token key na asiri da suka baka">
+                    </div>
+                    <div>
+                        <button type="submit" class="bg-stone-800 text-white px-6 py-2.5 text-sm font-bold rounded hover:bg-stone-700 transition cursor-pointer">Ajiye Provider</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Part B: Payment Gateway API Form -->
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 border-b pb-2">💳 Dora API na Payment Gateway (Monnify, Paystack, etc.)</h3>
+                <form id="paymentApiForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Gateway Name</label>
+                        <input type="text" id="payName" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="Monnify ko Paystack">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Public Key</label>
+                        <input type="text" id="payPublicKey" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="MK_PROD_...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Secret Key</label>
+                        <input type="text" id="paySecretKey" required class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="Ajiye asirin kudi anan">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Contract Code / Merchant ID (Na Monnify)</label>
+                        <input type="text" id="payContractCode" class="w-full px-3 py-2 border border-stone-300 rounded text-sm" placeholder="Idan ba na Monnify bane barshi a fari">
+                    </div>
+                    <div>
+                        <button type="submit" class="bg-amber-500 text-stone-900 px-6 py-2.5 text-sm font-bold rounded hover:bg-amber-400 transition cursor-pointer">Kunna Wannan Gateway din</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PRICING MANAGEMENT -->
+        <section id="pricing_settings" class="dashboard-section hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                <h3 class="text-lg font-bold text-stone-800 mb-4 border-b pb-2">Saita Farashin Kayayyaki</h3>
+                <form id="pricingForm" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">MTN SME 1GB (₦)</label>
+                        <input type="number" id="priceMtn1gb" class="w-full px-3 py-2 border border-stone-300 rounded text-sm" value="230">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Airtel 1GB (₦)</label>
+                        <input type="number" id="priceAirtel1gb" class="w-full px-3 py-2 border border-stone-300 rounded text-sm" value="220">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-600 mb-1">Glo 1GB (₦)</label>
+                        <input type="number" id="priceGlo1gb" class="w-full px-3 py-2 border border-stone-300 rounded text-sm" value="215">
+                    </div>
+                    <div>
+                        <button type="submit" class="bg-stone-800 text-white px-6 py-2.5 text-sm font-bold rounded hover:bg-stone-700 transition cursor-pointer">Update Prices</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 4: USER MANAGEMENT -->
+        <section id="user_management" class="dashboard-section hidden space-y-6">
+            <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm overflow-x-auto">
+                <h3 class="text-lg font-bold text-stone-800 mb-4">Duk Rijistattun Users</h3>
+                <table class="w-full text-left text-sm border-collapse">
+                    <thead>
+                        <tr class="bg-stone-100 border-b border-stone-200 text-stone-600 font-bold">
+                            <th class="p-3">Suna</th>
+                            <th class="p-3">Gmail</th>
+                            <th class="p-3">Lamba</th>
+                            <th class="p-3">Wallet Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Za su fito ta JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Firebase Controls for Dashboard -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDocs, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwnZ2VPQ3khaCao0U6zMDTgiw9ncXzwZ0",
+            authDomain: "auwalmdchat.firebaseapp.com",
+            databaseURL: "https://auwalmdchat-default-rtdb.firebaseio.com",
+            projectId: "auwalmdchat",
+            storageBucket: "auwalmdchat.firebasestorage.app",
+            messagingSenderId: "555262769124",
+            appId: "1:555262769124:web:0377d7152672ed4c44b9f1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Kula da tsaron shafi: Tabbatar Admin ne ya shigo
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            } else if (user.email !== 'yau789452@gmail.com') {
+                alert("Ba ka da ikon shiga shafin nan!");
+                signOut(auth);
+                window.location.href = "index.html";
+            } else {
+                loadUsers();
+            }
+        });
+
+        // Canza shafukan Menu
+        window.showSection = function(sectionId) {
+            document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById('pageTitle').innerText = sectionId.toUpperCase().replace('_', ' ');
+        }
+
+        // Tura Data API Firestore (Dynamic API Saving)
+        document.getElementById('vtuApiForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const provider = document.getElementById('vtuProviderName').value.trim();
+            await setDoc(doc(db, "vtu_providers", provider.toLowerCase()), {
+                name: provider,
+                baseUrl: document.getElementById('vtuBaseUrl').value,
+                apiKey: document.getElementById('vtuApiKey').value,
+                status: "active",
+                updatedAt: new Date().toISOString()
+            });
+            alert("An ajiye wannan Data API din cikin nasara!");
+            e.target.reset();
+        });
+
+        // Tura Payment API Firestore (Dynamic Payment Gateways Saving)
+        document.getElementById('paymentApiForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const gateway = document.getElementById('payName').value.trim();
+            await setDoc(doc(db, "payment_gateways", gateway.toLowerCase()), {
+                gatewayName: gateway,
+                publicKey: document.getElementById('payPublicKey').value,
+                secretKey: document.getElementById('paySecretKey').value,
+                contractCode: document.getElementById('payContractCode').value || null,
+                status: "active",
+                updatedAt: new Date().toISOString()
+            });
+            alert("An daura kuma an kunna API na payment din!");
+            e.target.reset();
+        });
+
+        // Dauko users daga Firestore a nuna su a dashboard
+        async function loadUsers() {
+            const querySnapshot = await getDocs(collection(db, "users"));
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            document.getElementById('countUsers').innerText = querySnapshot.size;
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                tbody.innerHTML += `
+                    <tr class="border-b border-stone-200 hover:bg-stone-50 text-stone-700">
+                        <td class="p-3">${data.fullName || 'Babu'}</td>
+                        <td class="p-3">${data.email}</td>
+                        <td class="p-3">${data.phoneNumber || 'Babu'}</td>
+                        <td class="p-3 font-bold text-green-600">₦${data.walletBalance || 0}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Logout Function
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth).then(() => window.location.href = "index.html");
+        });
+    </script>
+</body>
+</html>
