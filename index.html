@@ -1,73 +1,162 @@
 <!DOCTYPE html>
-<html lang="ha">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AuwalMD Tech - Admin Dashboard</title>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-storage-compat.js"></script>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-    .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
-    .header { background: #0b93f7; color: white; padding: 15px; text-align: center; }
-    .nav { background: #333; color: white; padding: 10px; }
-    .nav button { margin: 5px; padding: 10px 15px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Active Data - Sauri da Sauki</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-stone-100 text-stone-800 font-sans min-h-screen flex flex-col">
 
-  <div class="header">
-    <h1>AuwalMD Tech - Admin Panel</h1>
-    <p>Online Shop Management</p>
-  </div>
+    <!-- Navigation Bar -->
+    <nav class="bg-stone-800 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+            <span class="text-xl font-bold tracking-wider text-stone-200">
+                FAST ACTIVE <span class="text-amber-500">DATA</span>
+              </span>
+            <div class="flex space-x-3">
+                <button onclick="toggleModal('loginModal')" class="px-4 py-2 text-sm font-medium bg-stone-700 text-stone-200 rounded-md hover:bg-stone-600 transition cursor-pointer">Login</button>
+                <button onclick="toggleModal('registerModal')" class="px-4 py-2 text-sm font-medium bg-amber-500 text-stone-900 font-bold rounded-md hover:bg-amber-400 transition cursor-pointer">Rajista</button>
+            </div>
+        </div>
+    </nav>
 
-  <div class="nav">
-    <button onclick="showSection('dashboard')">Dashboard</button>
-    <button onclick="showSection('products')">Products</button>
-    <button onclick="showSection('orders')">Orders</button>
-    <button onclick="showSection('users')">Users</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+    <!-- Hero Section -->
+    <header class="bg-gradient-to-r from-stone-800 via-stone-700 to-stone-800 text-white py-24 px-4 text-center flex-grow flex items-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl sm:text-5xl font-extrabold mb-6">Sami Data, Airtime da Biyan Bill Cikin Sauri</h1>
+            <p class="text-lg text-stone-300 mb-8">Muna samar muku da mafi saukin farashin Data (MTN, Airtel, Glo, 9mobile) da biyan wutar lantarki take-yanke.</p>
+            <button onclick="toggleModal('registerModal')" class="px-8 py-3 text-lg font-bold bg-amber-500 text-stone-900 rounded-md shadow-lg hover:bg-amber-400 transition cursor-pointer">Fara Amfani da Mu Yanzu</button>
+        </div>
+    </header>
 
-  <div class="container">
-    <div id="dashboard" class="section"> <h2>Welcome to Dashboard</h2> </div>
-    <div id="products" class="section" style="display:none;"> <h2>Products Management</h2> </div>
-    <div id="orders" class="section" style="display:none;"> <h2>Orders</h2> </div>
-    <div id="users" class="section" style="display:none;"> <h2>Users</h2> </div>
-  </div>
+    <!-- Modal Na Login -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md relative">
+            <button onclick="toggleModal('loginModal')" class="absolute top-4 right-4 text-stone-500 text-xl font-bold hover:text-stone-800 cursor-pointer">&times;</button>
+            <h2 class="text-2xl font-bold text-stone-800 text-center mb-6">Shiga Akaundi</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Gmail Address</label>
+                    <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="example@gmail.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="******">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-stone-800 text-white font-bold rounded-md hover:bg-stone-700 transition text-sm cursor-pointer">Shiga (Login)</button>
+            </form>
+        </div>
+    </div>
 
-  <script>
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDwnZ2VPQ3khaCao0U6zMDTgiw9ncXzwZ0",
-      authDomain: "auwalmdchat.firebaseapp.com",
-      projectId: "auwalmdchat",
-      storageBucket: "auwalmdchat.firebasestorage.app",
-      messagingSenderId: "555262769124",
-      appId: "1:555262769124:web:ea255afdfac5c77444b9f1"
-    };
+    <!-- Modal Na Register -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-xl shadow-xl w-full max-w-md relative">
+            <button onclick="toggleModal('registerModal')" class="absolute top-4 right-4 text-stone-500 text-xl font-bold hover:text-stone-800 cursor-pointer">&times;</button>
+            <h2 class="text-2xl font-bold text-stone-800 text-center mb-6">Bude Akaundi</h2>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Cikakken Suna</label>
+                    <input type="text" id="regName" required class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="Auwal Muhammad">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Lambar Waya</label>
+                    <input type="text" id="regPhone" required class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="08012345678">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Gmail Address</label>
+                    <input type="email" id="regEmail" required class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="example@gmail.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-stone-600 uppercase mb-1">Password</label>
+                    <input type="password" id="regPassword" required minlength="6" class="w-full px-3 py-2 border border-stone-300 rounded-md focus:outline-zinc-500 text-sm" placeholder="Kada ya gaza baki 6">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-stone-800 text-white font-bold rounded-md hover:bg-stone-700 transition text-sm cursor-pointer">Rijista Yanzu</button>
+            </form>
+        </div>
+    </div>
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    <!-- Footer -->
+    <footer class="bg-stone-800 text-stone-400 py-6 text-center text-sm border-t border-stone-700">
+        &copy; 2026 Fast Active Data. Duka hakkoki suna kiyaye.
+    </footer>
 
-    function showSection(section) {
-      document.querySelectorAll('.section').forEach(div => div.style.display = 'none');
-      document.getElementById(section).style.display = 'block';
-    }
+    <!-- Firebase Script Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    function logout() {
-      auth.signOut().then(() => window.location.href = "login.html");
-    }
+        // Firebase Config dinka
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwnZ2VPQ3khaCao0U6zMDTgiw9ncXzwZ0",
+            authDomain: "auwalmdchat.firebaseapp.com",
+            databaseURL: "https://auwalmdchat-default-rtdb.firebaseio.com",
+            projectId: "auwalmdchat",
+            storageBucket: "auwalmdchat.firebasestorage.app",
+            messagingSenderId: "555262769124",
+            appId: "1:555262769124:web:0377d7152672ed4c44b9f1"
+        };
 
-    // Check if user is logged in
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "login.html";
-      }
-    });
-  </script>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Juya modal
+        window.toggleModal = function(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        // Tsarin Register
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, password);
+                const role = email.toLowerCase() === 'yau789452@gmail.com' ? 'admin' : 'user';
+                
+                await setDoc(doc(db, "users", cred.user.uid), {
+                    uid: cred.user.uid,
+                    fullName: name,
+                    phoneNumber: phone,
+                    email: email.toLowerCase(),
+                    role: role,
+                    walletBalance: 0,
+                    createdAt: new Date().toISOString()
+                });
+
+                alert("Rajista tayi nasara!");
+                window.location.href = "dashboard.html";
+            } catch (err) {
+                alert("Kuskure: " + err.message);
+            }
+        });
+
+        // Tsarin Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const cred = await signInWithEmailAndPassword(auth, email, password);
+                const userDoc = await getDoc(doc(db, "users", cred.user.uid));
+                
+                if(userDoc.exists() && userDoc.data().role === 'admin') {
+                    window.location.href = "dashboard.html";
+                } else {
+                    alert("Wannan shafin na Admin ne kadai!");
+                }
+            } catch (err) {
+                alert("Kuskure: " + err.message);
+            }
+        });
+    </script>
 </body>
 </html>
